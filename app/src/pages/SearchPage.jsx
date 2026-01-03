@@ -1,3 +1,4 @@
+import PropertyCard from "../components/PropertyCard";
 import { useMemo, useState } from "react";
 import { properties } from "../data/properties";
 
@@ -16,9 +17,36 @@ export default function SearchPage() {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const filtered = useMemo(() => {
-    return properties; // (we will filter in Step 3)
-  }, [filters]);
+const filtered = useMemo(() => {
+  const minP = filters.minPrice === "" ? null : Number(filters.minPrice);
+  const maxP = filters.maxPrice === "" ? null : Number(filters.maxPrice);
+  const minB = filters.minBeds === "" ? null : Number(filters.minBeds);
+  const maxB = filters.maxBeds === "" ? null : Number(filters.maxBeds);
+
+  const wantedArea = filters.postcodeArea.trim().toUpperCase();
+
+  return properties.filter((p) => {
+    // type
+    if (filters.type !== "any" && p.type !== filters.type) return false;
+
+    // price
+    if (minP !== null && p.price < minP) return false;
+    if (maxP !== null && p.price > maxP) return false;
+
+    // bedrooms
+    if (minB !== null && p.bedrooms < minB) return false;
+    if (maxB !== null && p.bedrooms > maxB) return false;
+
+    // postcode area (first part)
+    if (wantedArea !== "") {
+      const areaHave = String(p.postcode).split(" ")[0].toUpperCase();
+      if (areaHave !== wantedArea) return false;
+    }
+
+    return true;
+  });
+}, [filters]);
+
 
   return (
     <div style={{ padding: 16, fontFamily: "system-ui", maxWidth: 1000, margin: "0 auto" }}>
@@ -74,16 +102,25 @@ export default function SearchPage() {
         </button>
       </div>
 
-      <p style={{ marginTop: 16 }}>
-        Showing <b>{filtered.length}</b> of {properties.length}
-      </p>
+     
 
       {/* results placeholder */}
-      <ul>
-        {filtered.map((p) => (
-          <li key={p.id}>{p.id} — {p.type} — £{p.price.toLocaleString()}</li>
-        ))}
-      </ul>
+      <p style={{ marginTop: 16 }}>
+        Showing <b>{filtered.length}</b> of {properties.length}
+</p>
+{filtered.length === 0 ? (
+  <p style={{ marginTop: 16, opacity: 0.8 }}>
+    No properties match your filters. Try clearing or adjusting values.
+  </p>
+) : (
+  <div className="grid">
+    {filtered.map((p) => (
+      <PropertyCard key={p.id} property={p} />
+    ))}
+  </div>
+)}
+
+
     </div>
   );
 }
