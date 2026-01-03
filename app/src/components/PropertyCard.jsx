@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function PropertyCard({ property }) {
   const priceText = new Intl.NumberFormat("en-GB", {
     style: "currency",
@@ -29,9 +30,10 @@ export default function PropertyCard({ property }) {
 
         <p className="card__desc">{property.short}</p>
 
-        <button className="card__btn" type="button">
-          View details →
-        </button>
+       <Link className="button" to={`/property/${property.id}`}>
+  View details →
+</Link>
+
       </div>
     </article>
   );
