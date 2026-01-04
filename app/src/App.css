@@ -91,4 +91,148 @@
   margin-top: 8px;
   opacity: 0.9;
 }
+.favBtn{
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.favBtn:hover{
+  background: rgba(255,255,255,0.1);
+}
+/* ===== Search filters layout fix ===== */
+.filters{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+/* Make each label stack: title on top, input below */
+.filters > label{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.filters input,
+.filters select{
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  outline: none;
+}
+
+/* Clear button same height as inputs */
+.clearBtn{
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.clearBtn:hover{
+  background: rgba(255,255,255,0.1);
+}
+/* ===== Day 4 layout: results + favourites ===== */
+.layout{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+.favsCol{
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  padding: 14px;
+  min-height: 240px;
+}
+
+.favsHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropHint{
+  opacity: 0.8;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.emptyFavs{
+  margin-top: 14px;
+  opacity: 0.8;
+  padding: 14px;
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 12px;
+}
+
+.favList{
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.favItem{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+}
+
+.clearFavs,
+.removeFav{
+  border-radius: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.clearFavs:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 900px){
+  .layout{
+    grid-template-columns: 1fr;
+  }
+}
+.favCol--active{
+  border-color: rgba(120,180,255,0.9);
+  background: rgba(120,180,255,0.08);
+}
+.favDropZone {
+  border: 2px dashed rgba(255,255,255,0.18);
+}
+
+.favDropZone--active {
+  border-color: rgba(120,180,255,0.9);
+  background: rgba(120,180,255,0.08);
+}
 

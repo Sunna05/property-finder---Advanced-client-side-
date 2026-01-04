@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-export default function PropertyCard({ property }) {
+
+export default function PropertyCard({ property, isFavourite = false, onToggleFavourite = () => {} }) {
   const priceText = new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency: "GBP",
@@ -7,12 +8,15 @@ export default function PropertyCard({ property }) {
   }).format(property.price);
 
   return (
-    <article className="card">
-      <img
-        className="card__img"
-        src={property.picture}
-        alt={property.location}
-      />
+    <article
+  className="card"
+  draggable
+  onDragStart={(e) => {
+    e.dataTransfer.setData("text/plain", property.id);
+  }}
+>
+
+      <img className="card__img" src={property.picture} alt={property.location} />
 
       <div className="card__body">
         <div className="card__top">
@@ -23,17 +27,18 @@ export default function PropertyCard({ property }) {
         </div>
 
         <div className="card__meta">
-          <span>{property.location}</span>
-          <span>•</span>
-          <span>{property.postcode}</span>
+          <span>{property.location}</span> • <span>{property.postcode}</span>
         </div>
 
         <p className="card__desc">{property.short}</p>
 
-       <Link className="button" to={`/property/${property.id}`}>
-  View details →
-</Link>
+        <Link className="card__link" to={`/property/${property.id}`}>
+          View details →
+        </Link>
 
+        <button className="favBtn" onClick={onToggleFavourite}>
+          {isFavourite ? "Remove favourite" : "Add favourite"}
+        </button>
       </div>
     </article>
   );
