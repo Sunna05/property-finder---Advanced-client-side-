@@ -235,4 +235,21 @@
   border-color: rgba(120,180,255,0.9);
   background: rgba(120,180,255,0.08);
 }
+.layout{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.resultsCol{ min-width: 0; }
+.favsCol{ min-width: 0; }
+
+/* mobile */
+@media (max-width: 900px){
+  .layout{
+    grid-template-columns: 1fr;
+  }
+}
 
