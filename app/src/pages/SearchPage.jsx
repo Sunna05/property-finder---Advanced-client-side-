@@ -3,9 +3,10 @@ import PropertyCard from "../components/PropertyCard";
 import { properties } from "../data/properties";
 
 export default function SearchPage() {
-  // ✅ FAVOURITES (Day 4)
+  // ✅ FAVOURITES
   const [favourites, setFavourites] = useState([]);
   const [isDraggingOverFavs, setIsDraggingOverFavs] = useState(false);
+
   const isFavourite = (id) => favourites.some((p) => p.id === id);
 
   const addFavourite = (property) => {
@@ -34,9 +35,10 @@ export default function SearchPage() {
     const id = e.dataTransfer.getData("text/plain");
     const prop = properties.find((p) => p.id === id);
     if (prop) addFavourite(prop);
+    setIsDraggingOverFavs(false);
   };
 
-  // ✅ FILTERS (your Day 2)
+  // ✅ FILTERS
   const [filters, setFilters] = useState({
     type: "any",
     minPrice: "",
@@ -73,7 +75,8 @@ export default function SearchPage() {
     const dateAfter = filters.dateAfter ? new Date(filters.dateAfter) : null;
 
     return properties.filter((p) => {
-      if (filters.type !== "any" && p.type.toLowerCase() !== filters.type) return false;
+      if (filters.type !== "any" && p.type.toLowerCase() !== filters.type)
+        return false;
 
       if (minP !== null && p.price < minP) return false;
       if (maxP !== null && p.price > maxP) return false;
@@ -93,162 +96,189 @@ export default function SearchPage() {
   }, [filters]);
 
   return (
-    <div style={{ padding: 16 }}>
-      <h1 style={{ marginTop: 0 }}>Property Finder</h1>
+    <div className="page">
+      {/* ✅ TOP HEADER BAR */}
+      <header className="topbar">
+        <div className="brand">
+          <div className="brandTitle">Property Finder</div>
+          <div className="brandSub">Search • Drag into favourites • Remove anytime</div>
+        </div>
 
-      {/* FILTERS */}
-      <div className="filters">
-        <label>
-          Type
-          <select value={filters.type} onChange={(e) => update("type", e.target.value)}>
-            <option value="any">Any</option>
-            <option value="house">House</option>
-            <option value="flat">Flat</option>
-          </select>
-        </label>
+        <div className="badges">
+          <span className="badge">Results: {filtered.length}</span>
+          <span className="badge">Favourites: {favourites.length}</span>
+        </div>
+      </header>
 
-        <label>
-          Min price
-          <input
-            type="number"
-            value={filters.minPrice}
-            onChange={(e) => update("minPrice", e.target.value)}
-            placeholder="e.g. 150000"
-          />
-        </label>
-
-        <label>
-          Max price
-          <input
-            type="number"
-            value={filters.maxPrice}
-            onChange={(e) => update("maxPrice", e.target.value)}
-            placeholder="e.g. 350000"
-          />
-        </label>
-
-        <label>
-          Min beds
-          <input
-            type="number"
-            value={filters.minBeds}
-            onChange={(e) => update("minBeds", e.target.value)}
-            placeholder="e.g. 2"
-          />
-        </label>
-
-        <label>
-          Max beds
-          <input
-            type="number"
-            value={filters.maxBeds}
-            onChange={(e) => update("maxBeds", e.target.value)}
-            placeholder="e.g. 4"
-          />
-        </label>
-
-        <label>
-          Postcode area (e.g. BR1)
-          <input
-            value={filters.postcodeArea}
-            onChange={(e) => update("postcodeArea", e.target.value)}
-            placeholder="BR1"
-          />
-        </label>
-
-        <label>
-          Date added after
-          <input type="date" value={filters.dateAfter} onChange={(e) => update("dateAfter", e.target.value)} />
-        </label>
-
-        <button onClick={clear} className="clearBtn">Clear</button>
-      </div>
-
-      {/* ✅ NEW: Results + Favourites layout */}
-      <div className="layout">
-        {/* LEFT: RESULTS */}
-        <section className="resultsCol">
-          <p style={{ marginTop: 16 }}>
-            Showing <b>{filtered.length}</b> of {properties.length}
-          </p>
-
-          {filtered.length === 0 ? (
-            <p style={{ opacity: 0.85 }}>
-              No properties match your filters. Try clearing or adjusting values.
+      {/* ✅ FILTERS PANEL */}
+      <section className="panel">
+        <div className="panelTitleRow">
+          <div>
+            <h2 style={{ margin: 0 }}>Find your next home</h2>
+            <p style={{ margin: "6px 0 0", opacity: 0.75 }}>
+              Use filters then drag properties into favourites.
             </p>
-          ) : (
-            <div className="grid">
-              {filtered.map((p) => (
-                <div
-                  key={p.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, p.id)}
-                  className="draggableWrap"
-                  title="Drag this card to the favourites panel"
-                >
-                  <PropertyCard
-                    property={p}
-                    isFavourite={isFavourite(p.id)}
-                    onToggleFavourite={() =>
-                      isFavourite(p.id) ? removeFavourite(p.id) : addFavourite(p)
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* RIGHT: FAVOURITES (Drop Zone) */}
-        <aside
-          className="favCol"
-          onDragOver={allowDrop}
-          onDrop={handleDrop}
-        >
-          <div className="favHeader">
-            <h2 style={{ margin: 0 }}>Favourites ({favourites.length})</h2>
-            <button onClick={clearFavourites} disabled={favourites.length === 0}>
-              Clear
-            </button>
           </div>
 
-          <p className="favHint">
-            Drag a property card here to add it to favourites.
-          </p>
+          <div className="actions">
+            <button className="btn" onClick={clear}>
+              Reset
+            </button>
+          </div>
+        </div>
 
-          {favourites.length === 0 ? (
-            <p style={{ opacity: 0.85 }}>
-              No favourites yet. Click “Add favourite” or drag a card here.
+        <div className="filtersGrid">
+          <label>
+            Type
+            <select
+              value={filters.type}
+              onChange={(e) => update("type", e.target.value)}
+            >
+              <option value="any">Any</option>
+              <option value="house">House</option>
+              <option value="flat">Flat</option>
+            </select>
+          </label>
+
+          <label>
+            Postcode area
+            <input
+              value={filters.postcodeArea}
+              onChange={(e) => update("postcodeArea", e.target.value)}
+              placeholder="e.g. BR1"
+            />
+          </label>
+
+          <label>
+            Min price
+            <input
+              type="number"
+              value={filters.minPrice}
+              onChange={(e) => update("minPrice", e.target.value)}
+              placeholder="e.g. 150000"
+            />
+          </label>
+
+          <label>
+            Max price
+            <input
+              type="number"
+              value={filters.maxPrice}
+              onChange={(e) => update("maxPrice", e.target.value)}
+              placeholder="e.g. 350000"
+            />
+          </label>
+
+          <label>
+            Min beds
+            <input
+              type="number"
+              value={filters.minBeds}
+              onChange={(e) => update("minBeds", e.target.value)}
+              placeholder="e.g. 2"
+            />
+          </label>
+
+          <label>
+            Max beds
+            <input
+              type="number"
+              value={filters.maxBeds}
+              onChange={(e) => update("maxBeds", e.target.value)}
+              placeholder="e.g. 4"
+            />
+          </label>
+
+          <label>
+            Date added after
+            <input
+              type="date"
+              value={filters.dateAfter}
+              onChange={(e) => update("dateAfter", e.target.value)}
+            />
+          </label>
+        </div>
+      </section>
+
+      {/* ✅ RESULTS + FAVS PANEL */}
+      <section className="panel">
+        <div className="mainLayout">
+          {/* LEFT: RESULTS */}
+          <div>
+            <p style={{ marginTop: 0, opacity: 0.85 }}>
+              Showing <b>{filtered.length}</b> of {properties.length}
             </p>
-          ) : (
-            <div
-  className={"favDropZone" + (isDraggingOverFavs ? " favDropZone--active" : "")}
-  onDragOver={(e) => {
-    allowDrop(e);
-    setIsDraggingOverFavs(true);
-  }}
-  onDragLeave={() => setIsDraggingOverFavs(false)}
-  onDrop={(e) => {
-    handleDrop(e);
-    setIsDraggingOverFavs(false);
-  }}
-  style={{ marginTop: 12, padding: 12, borderRadius: 12 }}
->
-  <div className="grid">
-    {favourites.map((p) => (
-      <PropertyCard
-        key={p.id}
-        property={p}
-        isFavourite={true}
-        onToggleFavourite={() => removeFavourite(p.id)}
-      />
-    ))}
-  </div>
-</div>
 
-          )}
-        </aside>
-      </div>
+            {filtered.length === 0 ? (
+              <p style={{ opacity: 0.8 }}>
+                No properties match your filters. Try Reset.
+              </p>
+            ) : (
+              <div className="grid">
+                {filtered.map((p) => (
+                  <div
+                    key={p.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, p.id)}
+                    title="Drag this card to the favourites panel"
+                  >
+                    <PropertyCard
+                      property={p}
+                      isFavourite={isFavourite(p.id)}
+                      onToggleFavourite={() =>
+                        isFavourite(p.id) ? removeFavourite(p.id) : addFavourite(p)
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT: FAVOURITES */}
+          <aside>
+            <div className="panelTitleRow">
+              <h3 style={{ margin: 0 }}>Favourites ({favourites.length})</h3>
+              <button
+                className="btn"
+                onClick={clearFavourites}
+                disabled={favourites.length === 0}
+              >
+                Clear
+              </button>
+            </div>
+
+            <div
+              className={
+                "favDrop" + (isDraggingOverFavs ? " favDropZone--active" : "")
+              }
+              onDragOver={(e) => {
+                allowDrop(e);
+                setIsDraggingOverFavs(true);
+              }}
+              onDragLeave={() => setIsDraggingOverFavs(false)}
+              onDrop={handleDrop}
+            >
+              {favourites.length === 0 ? (
+                <p style={{ margin: 0, opacity: 0.85 }}>
+                  Drag a property card here to add it to favourites.
+                </p>
+              ) : (
+                <div className="grid" style={{ marginTop: 12 }}>
+                  {favourites.map((p) => (
+                    <PropertyCard
+                      key={p.id}
+                      property={p}
+                      isFavourite={true}
+                      onToggleFavourite={() => removeFavourite(p.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </aside>
+        </div>
+      </section>
     </div>
   );
 }

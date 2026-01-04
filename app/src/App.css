@@ -1,8 +1,89 @@
+:root{
+  --bg: #0b1020;
+  --panel: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.12);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.72);
+  --accent: #7c5cff;
+  --accent2: #55d6ff;
+}
+body{
+  background: radial-gradient(800px 500px at 10% 0%, rgba(124,92,255,0.20), transparent 60%),
+              radial-gradient(800px 500px at 90% 10%, rgba(85,214,255,0.18), transparent 60%),
+              var(--bg);
+  color: var(--text);
+}
+.card{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  border-color: rgba(124,92,255,0.35);
+}
+.card__meta, .card__desc{ color: var(--muted); }
+.card__link{ color: var(--accent2); font-weight: 600; }
+.btn{
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+.btn:hover{ background: rgba(255,255,255,0.10); }
+
+.btnPrimary{
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  color: #07101a;
+  font-weight: 800;
+}
+.btnPrimary:hover{ filter: brightness(1.05); }
+
+.btn:disabled{ opacity: .55; cursor: not-allowed; }
+/*You already have highlight; make it more obvious:*/
+.favCol{
+  background: rgba(255,255,255,0.04);
+  border: 1px dashed rgba(255,255,255,0.22);
+}
+.favCol--active{
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 4px rgba(85,214,255,0.12);
+}
+/*Add tiny “quality” UI bits (cheap but professional)*/
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--muted);
+  font-size: 13px;
+}
+/*) Accessibility polish (also helps marks)*/
+.favouritesPanel{
+  position: sticky;
+  top: 16px;
+  align-self: start;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+.container{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
 }
 
 .logo {
@@ -250,6 +331,156 @@
 @media (max-width: 900px){
   .layout{
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 900px){
+  .layoutRow{
+    display: block;
+  }
+  .favouritesPanel{
+    position: static;
+    margin-top: 16px;
+  }
+}
+/* ====== QUICK “PRO” LAYOUT (keeps your current colors) ====== */
+.page {
+  min-height: 100vh;
+  padding: 22px;
+}
+
+/* Top header bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
+
+  /* keeps your background colors (only glass effect) */
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.brandTitle {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+.brandSub {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.badge {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Panels (filters/results/favourites) */
+.panel {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(10px);
+}
+
+.panelTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.22);
+  color: inherit;
+  cursor: pointer;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Filters grid = “in a container” */
+.filtersGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.filtersGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.filtersGrid input,
+.filtersGrid select {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.18);
+  color: inherit;
+}
+
+/* Results + favourites side-by-side */
+.mainLayout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 16px;
+  align-items: start;
+}
+
+.favDrop {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255,255,255,0.25);
+  background: rgba(0,0,0,0.16);
+  margin-top: 12px;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .filtersGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .mainLayout {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 650px) {
+  .filtersGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
