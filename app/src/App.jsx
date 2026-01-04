@@ -1,3 +1,4 @@
+import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import SearchPage from "./pages/SearchPage";
 import PropertyDetailsPage from "./pages/PropertyDetailsPage";
