@@ -1,11 +1,56 @@
-# React + Vite
+# Property Finder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Property Finder is a small React application built with Vite for browsing, searching, and viewing property listings and details.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Search and filter property listings
+- View property details on a dedicated page
+- Responsive UI components
+
+## Tech Stack
+
+- React
+- Vite
+- CSS (plain or module-based depending on files)
+- Jest + React Testing Library (for unit tests)
+
+## Getting Started
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Run the development server:
+
+```bash
+npm run dev
+```
+
+3. Build for production:
+
+```bash
+npm run build
+```
+
+4. Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+5. Run tests:
+
+```bash
+npm test
+```
+
+## Project Links
+
+- **GitHub repository:** (https://github.com/Sunna05/property-finder---Advanced-client-side-)
+- **Vercel deployment:** (https://propertyfinder-pearl.vercel.app/)
 
 ## React Compiler
 
