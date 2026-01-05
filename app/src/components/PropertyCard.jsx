@@ -36,9 +36,14 @@ export default function PropertyCard({ property, isFavourite = false, onToggleFa
           View details →
         </Link>
 
-        <button className="favBtn" onClick={onToggleFavourite}>
-          {isFavourite ? "Remove favourite" : "Add favourite"}
-        </button>
+       <button
+  className="favBtn"
+  data-testid={`fav-btn-${property.id}`}
+  onClick={onToggleFavourite}
+>
+  {isFavourite ? "Remove favourite" : "Add favourite"}
+</button>
+
       </div>
     </article>
   );
